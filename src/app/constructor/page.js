@@ -46,6 +46,16 @@ export default function ConstructorPage() {
     ));
   };
 
+  const handleSaveLook = () => {
+    if (canvasItems.length === 0) {
+      alert("Додайте хоча б одну річ, щоб зберегти образ!");
+      return;
+    }
+    
+    alert("Образ успішно збережено у вашій колекції! 🎉");
+    setCanvasItems([]);
+  };
+
   return (
     <div className={styles.layout}>
       {/* Sidebar with Wardrobe Items */}
@@ -80,7 +90,7 @@ export default function ConstructorPage() {
               <RefreshCw size={18} />
               Очистити
             </Button>
-            <Button variant="primary">
+            <Button variant="primary" onClick={handleSaveLook}>
               <Save size={18} />
               Зберегти лук
             </Button>

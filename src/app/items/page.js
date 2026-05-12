@@ -22,6 +22,12 @@ export default function ItemsPage() {
   const [dragActive, setDragActive] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+  
+  // Form states
+  const [itemName, setItemName] = useState("");
+  const [itemCategory, setItemCategory] = useState("Верх");
+  const [itemSeason, setItemSeason] = useState("Літо");
+
   const fileInputRef = useRef(null);
 
   const categories = ["Всі", "Верх", "Низ", "Верхній одяг", "Взуття", "Аксесуари"];
@@ -67,6 +73,31 @@ export default function ItemsPage() {
     setIsModalOpen(false);
     setPreviewUrl(null);
     setSelectedFile(null);
+    setItemName("");
+    setItemCategory("Верх");
+    setItemSeason("Літо");
+  };
+
+  const handleSave = () => {
+    if (!itemName.trim()) {
+      alert("Будь ласка, введіть назву речі");
+      return;
+    }
+    if (!previewUrl) {
+      alert("Будь ласка, завантажте фото");
+      return;
+    }
+    
+    const newItem = {
+      id: Date.now(),
+      name: itemName,
+      category: itemCategory,
+      season: itemSeason,
+      image: previewUrl
+    };
+    
+    setItems([newItem, ...items]);
+    closeModal();
   };
 
   return (
@@ -132,22 +163,29 @@ export default function ItemsPage() {
           
           <div className={styles.formGroup}>
             <label>Назва речі</label>
-            <input type="text" placeholder="Наприклад: Біла базова футболка" className={styles.input} />
+            <input 
+              type="text" 
+              placeholder="Наприклад: Біла базова футболка" 
+              className={styles.input} 
+              value={itemName}
+              onChange={(e) => setItemName(e.target.value)}
+            />
           </div>
           
           <div className={styles.formRow}>
             <div className={styles.formGroup}>
               <label>Категорія</label>
-              <select className={styles.input}>
+              <select className={styles.input} value={itemCategory} onChange={(e) => setItemCategory(e.target.value)}>
                 <option>Верх</option>
                 <option>Низ</option>
                 <option>Верхній одяг</option>
                 <option>Взуття</option>
+                <option>Аксесуари</option>
               </select>
             </div>
             <div className={styles.formGroup}>
               <label>Сезон</label>
-              <select className={styles.input}>
+              <select className={styles.input} value={itemSeason} onChange={(e) => setItemSeason(e.target.value)}>
                 <option>Літо</option>
                 <option>Демісезон</option>
                 <option>Зима</option>
@@ -156,7 +194,7 @@ export default function ItemsPage() {
             </div>
           </div>
           
-          <Button variant="primary" style={{ width: '100%', marginTop: '1rem' }} onClick={closeModal}>
+          <Button variant="primary" style={{ width: '100%', marginTop: '1rem' }} onClick={handleSave}>
             Зберегти річ
           </Button>
         </div>
