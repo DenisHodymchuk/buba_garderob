@@ -38,14 +38,16 @@ export default async function ConstructorPage({ searchParams }) {
       
     if (look) {
       existingLook = look;
-      initialCanvasItems = look.look_items.map(li => ({
-        ...li.items,
-        image: li.items.image_url,
-        x: li.x,
-        y: li.y,
-        zIndex: li.z_index,
-        scale: li.scale
-      }));
+      initialCanvasItems = look.look_items
+        .filter(li => li.items !== null) // Safety check
+        .map(li => ({
+          ...li.items,
+          image: li.items.image_url,
+          x: li.x,
+          y: li.y,
+          zIndex: li.z_index,
+          scale: li.scale
+        }));
     }
   }
 

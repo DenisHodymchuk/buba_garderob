@@ -101,7 +101,7 @@ export default function ConstructorPage({ initialWardrobeItems, initialCanvasIte
 
       <main className={styles.mainCanvas}>
         <header className={styles.canvasHeader}>
-          <div className={styles.lookMeta}>
+          <div className={styles.headerTop}>
             <input 
               type="text" 
               placeholder="Назва образу..." 
@@ -109,31 +109,32 @@ export default function ConstructorPage({ initialWardrobeItems, initialCanvasIte
               onChange={(e) => setTitle(e.target.value)}
               className={styles.titleInput}
             />
-            <div className={styles.metaRow}>
-              <select value={season} onChange={(e) => setSeason(e.target.value)} className={styles.select}>
-                <option>Універсальний</option>
-                <option>Літо</option>
-                <option>Осінь</option>
-                <option>Зима</option>
-                <option>Весна</option>
-              </select>
-              <input 
-                type="text" 
-                placeholder="Теги (через кому)..." 
-                value={tags} 
-                onChange={(e) => setTags(e.target.value)}
-                className={styles.tagsInput}
-              />
+            <div className={styles.actions}>
+              <Button variant="secondary" onClick={() => setCanvasItems([])} disabled={isSaving} className={styles.headerBtn}>
+                <RefreshCw size={18} />
+              </Button>
+              <Button variant="primary" onClick={handleSaveLook} disabled={isSaving} className={styles.headerBtn}>
+                <Save size={18} />
+                {isSaving ? "..." : (existingLook ? "Оновити" : "Зберегти")}
+              </Button>
             </div>
           </div>
-          <div className={styles.actions}>
-            <Button variant="secondary" onClick={() => setCanvasItems([])} disabled={isSaving}>
-              <RefreshCw size={18} />
-            </Button>
-            <Button variant="primary" onClick={handleSaveLook} disabled={isSaving}>
-              <Save size={18} />
-              {isSaving ? "..." : (existingLook ? "Оновити" : "Зберегти")}
-            </Button>
+          
+          <div className={styles.metaRow}>
+            <select value={season} onChange={(e) => setSeason(e.target.value)} className={styles.select}>
+              <option>Універсальний</option>
+              <option>Літо</option>
+              <option>Осінь</option>
+              <option>Зима</option>
+              <option>Весна</option>
+            </select>
+            <input 
+              type="text" 
+              placeholder="Теги (через кому)..." 
+              value={tags} 
+              onChange={(e) => setTags(e.target.value)}
+              className={styles.tagsInput}
+            />
           </div>
         </header>
 
