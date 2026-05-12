@@ -89,3 +89,18 @@ export async function saveItemAction(formData) {
 
   return { ...newItem, image: newItem.image_url };
 }
+
+export async function deleteItemAction(id) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) throw new Error("Unauthorized");
+
+  const { error } = await supabase
+    .from('items')
+    .delete()
+    .eq('id', id)
+    .eq('user_id', user.id);
+
+  if (error) throw error;
+}

@@ -264,7 +264,36 @@
   color: white;
 }
 
-@media (max-width: 640px) {
+.lookHeaderRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.deleteLookBtn {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  padding: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lookCard:hover .deleteLookBtn {
+  opacity: 1;
+}
+
+.deleteLookBtn:hover {
+  background: #ef4444;
+  color: white;
+  transform: scale(1.1);
+}
   .grid {
     grid-template-columns: 1fr;
   }

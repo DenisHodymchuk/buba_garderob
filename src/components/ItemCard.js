@@ -1,9 +1,19 @@
 import Image from 'next/image';
+import { Trash2 } from 'lucide-react';
 import styles from './ItemCard.module.css';
 
-export default function ItemCard({ item, onClick }) {
+export default function ItemCard({ item, onClick, onDelete }) {
   return (
     <div className={styles.card} onClick={onClick}>
+      <button 
+        className={styles.deleteBtn} 
+        onClick={(e) => {
+          e.stopPropagation();
+          onDelete(item.id);
+        }}
+      >
+        <Trash2 size={16} />
+      </button>
       <div className={styles.imageContainer}>
         {item.image ? (
           <Image 

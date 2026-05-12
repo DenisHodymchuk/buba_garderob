@@ -3,13 +3,29 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Shirt, ArrowLeft, Filter, Search, Tag, Calendar } from 'lucide-react';
+import { Shirt, ArrowLeft, Filter, Search, Tag, Calendar, Trash2 } from 'lucide-react';
 import styles from './page.module.css';
+import { deleteLookAction } from '../constructor/actions';
+import Toast from '@/components/Toast';
+import { AnimatePresence } from 'framer-motion';
 
 export default function LooksClient({ initialLooks }) {
   const [looks, setLooks] = useState(initialLooks);
   const [filterSeason, setFilterSeason] = useState('Всі');
   const [searchQuery, setSearchQuery] = useState('');
+  const [toast, setToast] = useState(null);
+
+  const handleDelete = async (id) => {
+    if (!confirm('Ви впевнені, що хочете видалити цю колекцію?')) return;
+    
+    try {
+      await deleteLookAction(id);
+      setLooks(looks.filter(l => l.id !== id));
+      setToast({ message: "Колекцію видалено", type: "success" });
+    } catch (error) {
+      setToast({ message: "Помилка видалення: " + error.message, type: "error" });
+    }
+  };
 
   // Extract all unique tags
   const allTags = useMemo(() => {
@@ -92,9 +108,14 @@ export default function LooksClient({ initialLooks }) {
                       ))}
                     </div>
                   </div>
-                  <span className={styles.lookDate}>
-                    {new Date(look.created_at).toLocaleDateString('uk-UA')}
-                  </span>
+                  <div className={styles.lookHeaderRight}>
+                    <span className={styles.lookDate}>
+                      {new Date(look.created_at).toLocaleDateString('uk-UA')}
+                    </span>
+                    <button className={styles.deleteLookBtn} onClick={() => handleDelete(look.id)}>
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
                 </div>
                 
                 <div className={styles.itemsPreview}>
@@ -124,6 +145,9 @@ export default function LooksClient({ initialLooks }) {
           ))}
         </div>
       )}
+      <AnimatePresence>
+        {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+      </AnimatePresence>
     </div>
   );
 }

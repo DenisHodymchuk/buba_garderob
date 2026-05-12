@@ -10,7 +10,7 @@ import CustomSelect from "@/components/CustomSelect";
 import { AnimatePresence } from "framer-motion";
 import styles from "./page.module.css";
 
-import { saveItemAction } from "./actions";
+import { saveItemAction, deleteItemAction } from "./actions";
 
 export default function ItemsClient({ initialItems }) {
   const [items, setItems] = useState(initialItems);
@@ -110,6 +110,18 @@ export default function ItemsClient({ initialItems }) {
     }
   };
 
+  const handleDeleteItem = async (id) => {
+    if (!confirm("Ви впевнені, що хочете видалити цю річ?")) return;
+    
+    try {
+      await deleteItemAction(id);
+      setItems(items.filter(i => i.id !== id));
+      setToast({ message: "Річ видалено з гардеробу", type: "success" });
+    } catch (error) {
+      setToast({ message: "Помилка видалення: " + error.message, type: "error" });
+    }
+  };
+
   return (
     <div className={`${styles.container} container`}>
       <header className={styles.header}>
@@ -138,7 +150,7 @@ export default function ItemsClient({ initialItems }) {
 
       <div className={styles.grid}>
         {filteredItems.map(item => (
-          <ItemCard key={item.id} item={item} />
+          <ItemCard key={item.id} item={item} onDelete={handleDeleteItem} />
         ))}
       </div>
 
