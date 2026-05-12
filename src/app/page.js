@@ -23,7 +23,7 @@ export default async function Home() {
           <nav className={styles.navLinks}>
             <Link href="/items" className={styles.navLink}>Речі</Link>
             <Link href="/constructor" className={styles.navLink}>Конструктор</Link>
-            <Link href="/looks" className={styles.navLink}>Образи</Link>
+            <Link href="/looks" className={styles.navLink}>Колекції</Link>
             <Link href="/calendar" className={styles.navLink}>Календар</Link>
             
             {user ? (
@@ -80,7 +80,7 @@ export default async function Home() {
           <div className={styles.cardIcon}>
             <CalendarDays size={24} />
           </div>
-          <h3 className={styles.cardTitle}>Мої образи</h3>
+          <h3 className={styles.cardTitle}>Мої колекції</h3>
           <p className={styles.cardDesc}>Переглядайте свої збережені комбінації та плануйте, що вдягнути.</p>
         </Link>
 

@@ -37,7 +37,7 @@ export default async function LooksPage() {
           <Link href="/" className={styles.backLink}>
             <ArrowLeft size={18} /> Назад
           </Link>
-          <h1 className={styles.title}>Мої образи</h1>
+          <h1 className={styles.title}>Мої колекції</h1>
         </header>
 
         {looks?.length === 0 ? (
