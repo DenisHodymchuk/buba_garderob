@@ -19,13 +19,45 @@ export async function saveItemAction(formData) {
     throw new Error("Missing required fields");
   }
 
-  // Upload image to Storage
-  const fileExt = file.name.split('.').pop();
+  // 1. Remove background using Remove.bg
+  let processedFile = file;
+  const apiKey = process.env.REMOVE_BG_API_KEY;
+
+  if (apiKey) {
+    try {
+      const formDataBg = new FormData();
+      formDataBg.append('image_file', file);
+      formDataBg.append('size', 'auto');
+
+      const response = await fetch('https://api.remove.bg/v1.0/removebg', {
+        method: 'POST',
+        headers: {
+          'X-Api-Key': apiKey,
+        },
+        body: formDataBg,
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        processedFile = new File([blob], file.name, { type: 'image/png' });
+      } else {
+        const errorText = await response.text();
+        console.error("Remove.bg error:", errorText);
+        // Fallback to original file if BG removal fails
+      }
+    } catch (error) {
+      console.error("Background removal failed:", error);
+      // Fallback to original file
+    }
+  }
+
+  // 2. Upload processed image to Storage
+  const fileExt = processedFile.name.split('.').pop() || 'png';
   const fileName = `${Date.now()}_${Math.random()}.${fileExt}`;
   
   const { error: uploadError } = await supabase.storage
     .from('wardrobe_images')
-    .upload(fileName, file);
+    .upload(fileName, processedFile);
 
   if (uploadError) {
     console.error("Upload error:", uploadError);
