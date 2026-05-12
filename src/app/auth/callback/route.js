@@ -21,7 +21,7 @@ export async function GET(request) {
           setAll(cookiesToSet) {
             try {
               cookiesToSet.forEach(({ name, value, options }) => {
-                cookieStore.set(name, value, options)
+                cookieStore.set(name, value, { ...options, httpOnly: false })
               })
             } catch (error) {
               // The `set` method was called from a Server Component.
