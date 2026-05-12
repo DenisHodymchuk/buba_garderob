@@ -74,6 +74,9 @@ export default async function LooksPage() {
                 </div>
 
                 <div className={styles.lookActions}>
+                  <span className={styles.itemCount}>
+                    {look.look_items.length} {look.look_items.length === 1 ? 'річ' : 'речі'}
+                  </span>
                   <Link href={`/constructor?edit=${look.id}`} className={styles.editBtn}>
                     Редагувати
                   </Link>
