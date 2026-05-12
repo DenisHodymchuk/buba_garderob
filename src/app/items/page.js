@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Plus, Filter, UploadCloud } from "lucide-react";
 import ItemCard from "@/components/ItemCard";
@@ -7,16 +7,13 @@ import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import styles from "./page.module.css";
 
-// MOCK DATA
-const MOCK_ITEMS = [
-  { id: 1, name: "Біла футболка", category: "Верх", season: "Літо", image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&auto=format&fit=crop&q=60" },
-  { id: 2, name: "Сині джинси", category: "Низ", season: "Демісезон", image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=500&auto=format&fit=crop&q=60" },
-  { id: 3, name: "Чорна куртка", category: "Верхній одяг", season: "Осінь", image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&auto=format&fit=crop&q=60" },
-  { id: 4, name: "Кросівки", category: "Взуття", season: "Всесезонна", image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500&auto=format&fit=crop&q=60" }
-];
+import { createClient } from "@/lib/supabase/client";
 
 export default function ItemsPage() {
-  const [items, setItems] = useState(MOCK_ITEMS);
+  const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filter, setFilter] = useState("Всі");
   const [dragActive, setDragActive] = useState(false);
@@ -29,6 +26,32 @@ export default function ItemsPage() {
   const [itemSeason, setItemSeason] = useState("Літо");
 
   const fileInputRef = useRef(null);
+  const supabase = createClient();
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
+
+  const fetchItems = async () => {
+    setIsLoading(true);
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      const { data, error } = await supabase
+        .from('items')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (!error && data) {
+        // Map database fields to app fields
+        const formattedItems = data.map(item => ({
+          ...item,
+          image: item.image_url // DB uses image_url, our app uses image
+        }));
+        setItems(formattedItems);
+      }
+    }
+    setIsLoading(false);
+  };
 
   const categories = ["Всі", "Верх", "Низ", "Верхній одяг", "Взуття", "Аксесуари"];
   const filteredItems = filter === "Всі" ? items : items.filter(i => i.category === filter);
@@ -78,26 +101,60 @@ export default function ItemsPage() {
     setItemSeason("Літо");
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!itemName.trim()) {
       alert("Будь ласка, введіть назву речі");
       return;
     }
-    if (!previewUrl) {
+    if (!selectedFile) {
       alert("Будь ласка, завантажте фото");
       return;
     }
     
-    const newItem = {
-      id: Date.now(),
-      name: itemName,
-      category: itemCategory,
-      season: itemSeason,
-      image: previewUrl
-    };
+    setIsSaving(true);
     
-    setItems([newItem, ...items]);
-    closeModal();
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Користувач не авторизований");
+
+      // Upload image to Storage
+      const fileExt = selectedFile.name.split('.').pop();
+      const fileName = `${Date.now()}_${Math.random()}.${fileExt}`;
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('wardrobe_images')
+        .upload(fileName, selectedFile);
+        
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('wardrobe_images')
+        .getPublicUrl(fileName);
+
+      // Save item to Database
+      const { data: newItem, error: dbError } = await supabase
+        .from('items')
+        .insert({
+          user_id: user.id,
+          name: itemName,
+          category: itemCategory,
+          season: itemSeason,
+          image_url: publicUrl
+        })
+        .select()
+        .single();
+        
+      if (dbError) throw dbError;
+
+      // Update local state
+      setItems([{...newItem, image: newItem.image_url}, ...items]);
+      closeModal();
+    } catch (error) {
+      console.error("Error saving item:", error);
+      alert("Помилка збереження. Перевірте консоль для деталей.");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -194,8 +251,8 @@ export default function ItemsPage() {
             </div>
           </div>
           
-          <Button variant="primary" style={{ width: '100%', marginTop: '1rem' }} onClick={handleSave}>
-            Зберегти річ
+          <Button variant="primary" style={{ width: '100%', marginTop: '1rem' }} onClick={handleSave} disabled={isSaving}>
+            {isSaving ? "Збереження..." : "Зберегти річ"}
           </Button>
         </div>
       </Modal>
