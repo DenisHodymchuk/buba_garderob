@@ -21,6 +21,7 @@ export default function ConstructorPage({ initialWardrobeItems, initialCanvasIte
   const [title, setTitle] = useState(existingLook?.title || "");
   const [season, setSeason] = useState(existingLook?.season || "Універсальний");
   const [tags, setTags] = useState(existingLook?.tags?.join(", ") || "");
+  const [selectedItemId, setSelectedItemId] = useState(null);
 
   const seasons = ["Універсальний", "Літо", "Осінь", "Зима", "Весна"];
 
@@ -28,9 +29,17 @@ export default function ConstructorPage({ initialWardrobeItems, initialCanvasIte
 
   const removeItem = (id) => {
     setCanvasItems(canvasItems.filter(i => i.id !== id));
+    if (selectedItemId === id) setSelectedItemId(null);
+  };
+
+  const updateScale = (id, newScale) => {
+    setCanvasItems(canvasItems.map(item => 
+      item.id === id ? { ...item, scale: parseFloat(newScale) } : item
+    ));
   };
 
   const bringToFront = (id) => {
+    setSelectedItemId(id);
     const maxZ = Math.max(...canvasItems.map(i => i.zIndex), 0);
     setCanvasItems(canvasItems.map(item => 
       item.id === id ? { ...item, zIndex: maxZ + 1 } : item
@@ -158,9 +167,10 @@ export default function ConstructorPage({ initialWardrobeItems, initialCanvasIte
                 dragConstraints={canvasRef}
                 dragMomentum={false}
                 onDragStart={() => bringToFront(item.id)}
-                className={styles.draggableItem}
-                initial={{ x: item.x, y: item.y }}
-                animate={{ x: item.x, y: item.y }}
+                onClick={() => setSelectedItemId(item.id)}
+                className={`${styles.draggableItem} ${selectedItemId === item.id ? styles.selected : ''}`}
+                initial={{ x: item.x, y: item.y, scale: item.scale || 1 }}
+                animate={{ x: item.x, y: item.y, scale: item.scale || 1 }}
                 onDragEnd={(event, info) => {
                   setCanvasItems(items => items.map(i => 
                     i.id === item.id ? { ...i, x: i.x + info.delta.x, y: i.y + info.delta.y } : i
@@ -171,12 +181,26 @@ export default function ConstructorPage({ initialWardrobeItems, initialCanvasIte
                   position: 'absolute',
                 }}
               >
-                <button className={styles.deleteBtn} onClick={() => removeItem(item.id)}>
+                <button className={styles.deleteBtn} onClick={(e) => { e.stopPropagation(); removeItem(item.id); }}>
                   <X size={14} />
                 </button>
                 <div className={styles.draggableImageWrapper}>
                   <Image src={item.image} alt={item.name} fill style={{ objectFit: 'contain', pointerEvents: 'none' }} unoptimized />
                 </div>
+                
+                {selectedItemId === item.id && (
+                  <div className={styles.resizeControls} onClick={(e) => e.stopPropagation()}>
+                    <input 
+                      type="range" 
+                      min="0.3" 
+                      max="2.5" 
+                      step="0.1" 
+                      value={item.scale || 1} 
+                      onChange={(e) => updateScale(item.id, e.target.value)}
+                      className={styles.scaleSlider}
+                    />
+                  </div>
+                )}
               </motion.div>
             ))}
           </div>
