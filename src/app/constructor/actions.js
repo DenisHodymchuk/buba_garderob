@@ -10,24 +10,51 @@ export async function saveLookAction(lookData) {
     throw new Error("Unauthorized");
   }
 
-  const { items } = lookData;
+  const { id, items, title, season, tags } = lookData;
 
-  // 1. Create the look
-  const { data: look, error: lookError } = await supabase
-    .from('looks')
-    .insert({
-      user_id: user.id,
-      title: `Образ ${new Date().toLocaleDateString('uk-UA')}`
-    })
-    .select()
-    .single();
+  let look;
+  let lookError;
 
-  if (lookError) {
-    console.error("Look creation error:", lookError);
-    throw new Error("Failed to create look");
+  if (id) {
+    // Update existing look
+    const { data, error } = await supabase
+      .from('looks')
+      .update({
+        title: title || `Оновлений образ`,
+        season: season || 'Універсальний',
+        tags: tags || []
+      })
+      .eq('id', id)
+      .select()
+      .single();
+    look = data;
+    lookError = error;
+  } else {
+    // Create new look
+    const { data, error } = await supabase
+      .from('looks')
+      .insert({
+        user_id: user.id,
+        title: title || `Образ ${new Date().toLocaleDateString('uk-UA')}`,
+        season: season || 'Універсальний',
+        tags: tags || []
+      })
+      .select()
+      .single();
+    look = data;
+    lookError = error;
   }
 
-  // 2. Save items belonging to the look
+  if (lookError) {
+    console.error("Look saving error:", lookError);
+    throw new Error("Failed to save look");
+  }
+
+  // 2. Save items belonging to the look (delete old ones first if updating)
+  if (id) {
+    await supabase.from('look_items').delete().eq('look_id', id);
+  }
+
   const lookItems = items.map(item => ({
     look_id: look.id,
     item_id: item.id,
@@ -42,7 +69,7 @@ export async function saveLookAction(lookData) {
     .insert(lookItems);
 
   if (itemsError) {
-    console.error("Look items creation error:", itemsError);
+    console.error("Look items saving error:", itemsError);
     throw new Error("Failed to save look items");
   }
 

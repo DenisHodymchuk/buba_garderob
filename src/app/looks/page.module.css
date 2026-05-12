@@ -101,7 +101,36 @@
 .lookHeader {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+}
+
+.lookMetaInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lookSeason {
+  font-size: 12px;
+  color: #a855f7;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tagsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  font-size: 11px;
+  background: rgba(168, 85, 247, 0.1);
+  color: #d8b4fe;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(168, 85, 247, 0.2);
 }
 
 .lookTitle {

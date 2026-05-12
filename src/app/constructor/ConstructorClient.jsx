@@ -9,27 +9,17 @@ import Image from "next/image";
 
 import { saveLookAction } from "./actions";
 
-export default function ConstructorPage({ initialWardrobeItems }) {
+export default function ConstructorPage({ initialWardrobeItems, initialCanvasItems, existingLook }) {
   const [wardrobeItems] = useState(initialWardrobeItems);
-  const [canvasItems, setCanvasItems] = useState([]);
+  const [canvasItems, setCanvasItems] = useState(initialCanvasItems || []);
   const [isSaving, setIsSaving] = useState(false);
-  const canvasRef = useRef(null);
+  
+  // Metadata states
+  const [title, setTitle] = useState(existingLook?.title || "");
+  const [season, setSeason] = useState(existingLook?.season || "Універсальний");
+  const [tags, setTags] = useState(existingLook?.tags?.join(", ") || "");
 
-  const addItemToCanvas = (item) => {
-    // Check if item is already on canvas
-    if (canvasItems.find(i => i.id === item.id)) return;
-    
-    setCanvasItems([
-      ...canvasItems,
-      {
-        ...item,
-        x: 50, // Initial position
-        y: 50,
-        zIndex: canvasItems.length + 1,
-        scale: 1,
-      }
-    ]);
-  };
+  const canvasRef = useRef(null);
 
   const removeItem = (id) => {
     setCanvasItems(canvasItems.filter(i => i.id !== id));
@@ -42,25 +32,48 @@ export default function ConstructorPage({ initialWardrobeItems }) {
     ));
   };
 
+  const addItemToCanvas = (item) => {
+    if (canvasItems.find(i => i.id === item.id)) return;
+    
+    setCanvasItems([
+      ...canvasItems,
+      {
+        ...item,
+        x: 0, 
+        y: 0,
+        zIndex: canvasItems.length + 1,
+        scale: 1,
+      }
+    ]);
+  };
+
   const handleSaveLook = async () => {
     if (canvasItems.length === 0) {
-      alert("Додайте хоча б одну річ, щоб зберегти образ!");
+      alert("Додайте хоча б одну річ!");
       return;
     }
 
     setIsSaving(true);
     try {
-      // In a real app, we'd get positions from the DOM/motion state
-      // but for now we'll send the state as is
+      const tagList = tags.split(",").map(t => t.trim()).filter(t => t !== "");
+      
       await saveLookAction({
-        items: canvasItems
+        id: existingLook?.id,
+        items: canvasItems,
+        title: title || `Образ ${new Date().toLocaleDateString('uk-UA')}`,
+        season,
+        tags: tagList
       });
       
-      alert("Образ успішно збережено у вашій колекції! 🎉");
-      setCanvasItems([]);
+      alert(existingLook ? "Образ оновлено! 🎉" : "Образ збережено! 🎉");
+      if (!existingLook) {
+        setCanvasItems([]);
+        setTitle("");
+        setTags("");
+      }
     } catch (error) {
       console.error("Error saving look:", error);
-      alert("Помилка при збереженні образу: " + error.message);
+      alert("Помилка: " + error.message);
     } finally {
       setIsSaving(false);
     }
@@ -68,26 +81,15 @@ export default function ConstructorPage({ initialWardrobeItems }) {
 
   return (
     <div className={styles.layout}>
-      {/* Sidebar with Wardrobe Items */}
       <aside className={styles.sidebar}>
         <div className={styles.sidebarHeader}>
-          <Link href="/" className={styles.backLink}>← Назад</Link>
-          <h2>Гардероб</h2>
+          <Link href="/looks" className={styles.backLink}>← До колекцій</Link>
+          <h2>{existingLook ? 'Редагування' : 'Гардероб'}</h2>
         </div>
         
         <div className={styles.itemsList}>
-          {wardrobeItems.length === 0 && (
-            <div className={styles.emptyWardrobe}>
-              <p>У вашому гардеробі поки що немає речей.</p>
-              <Link href="/items" className={styles.addBtn}>Додати речі</Link>
-            </div>
-          )}
           {wardrobeItems.map(item => (
-            <div 
-              key={item.id} 
-              className={styles.sidebarItem}
-              onClick={() => addItemToCanvas(item)}
-            >
+            <div key={item.id} className={styles.sidebarItem} onClick={() => addItemToCanvas(item)}>
               <div className={styles.itemImageWrapper}>
                 <Image src={item.image} alt={item.name} fill style={{ objectFit: 'cover' }} unoptimized />
               </div>
@@ -97,18 +99,40 @@ export default function ConstructorPage({ initialWardrobeItems }) {
         </div>
       </aside>
 
-      {/* Main Canvas Area */}
       <main className={styles.mainCanvas}>
         <header className={styles.canvasHeader}>
-          <h1 className={styles.title}>Новий образ</h1>
+          <div className={styles.lookMeta}>
+            <input 
+              type="text" 
+              placeholder="Назва образу..." 
+              value={title} 
+              onChange={(e) => setTitle(e.target.value)}
+              className={styles.titleInput}
+            />
+            <div className={styles.metaRow}>
+              <select value={season} onChange={(e) => setSeason(e.target.value)} className={styles.select}>
+                <option>Універсальний</option>
+                <option>Літо</option>
+                <option>Осінь</option>
+                <option>Зима</option>
+                <option>Весна</option>
+              </select>
+              <input 
+                type="text" 
+                placeholder="Теги (через кому)..." 
+                value={tags} 
+                onChange={(e) => setTags(e.target.value)}
+                className={styles.tagsInput}
+              />
+            </div>
+          </div>
           <div className={styles.actions}>
             <Button variant="secondary" onClick={() => setCanvasItems([])} disabled={isSaving}>
               <RefreshCw size={18} />
-              Очистити
             </Button>
             <Button variant="primary" onClick={handleSaveLook} disabled={isSaving}>
               <Save size={18} />
-              {isSaving ? "Збереження..." : "Зберегти лук"}
+              {isSaving ? "..." : (existingLook ? "Оновити" : "Зберегти")}
             </Button>
           </div>
         </header>
@@ -118,7 +142,7 @@ export default function ConstructorPage({ initialWardrobeItems }) {
             {canvasItems.length === 0 && (
               <div className={styles.emptyState}>
                 <ImageIcon size={48} />
-                <p>Клікніть на речі зліва, щоб додати їх на полотно</p>
+                <p>Клікніть на речі зліва</p>
               </div>
             )}
             
@@ -127,34 +151,26 @@ export default function ConstructorPage({ initialWardrobeItems }) {
                 key={item.id}
                 drag
                 dragConstraints={canvasRef}
-                dragElastic={0.1}
                 dragMomentum={false}
                 onDragStart={() => bringToFront(item.id)}
-                onMouseDown={() => bringToFront(item.id)}
                 className={styles.draggableItem}
+                initial={{ x: item.x, y: item.y }}
+                animate={{ x: item.x, y: item.y }}
+                onDragEnd={(event, info) => {
+                  setCanvasItems(items => items.map(i => 
+                    i.id === item.id ? { ...i, x: i.x + info.delta.x, y: i.y + info.delta.y } : i
+                  ));
+                }}
                 style={{
-                  x: item.x,
-                  y: item.y,
                   zIndex: item.zIndex,
-                  scale: item.scale,
                   position: 'absolute',
-                  cursor: 'grab'
                 }}
               >
-                <button className={styles.deleteBtn} onClick={(e) => {
-                  e.stopPropagation();
-                  removeItem(item.id);
-                }}>
+                <button className={styles.deleteBtn} onClick={() => removeItem(item.id)}>
                   <X size={14} />
                 </button>
                 <div className={styles.draggableImageWrapper}>
-                  <Image 
-                    src={item.image} 
-                    alt={item.name} 
-                    fill 
-                    style={{ objectFit: 'contain', pointerEvents: 'none' }} 
-                    unoptimized
-                  />
+                  <Image src={item.image} alt={item.name} fill style={{ objectFit: 'contain', pointerEvents: 'none' }} unoptimized />
                 </div>
               </motion.div>
             ))}

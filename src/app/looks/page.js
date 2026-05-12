@@ -53,11 +53,22 @@ export default async function LooksPage() {
             {looks?.map((look) => (
               <div key={look.id} className={`${styles.lookCard} glass-panel`}>
                 <div className={styles.lookHeader}>
-                  <h3 className={styles.lookTitle}>{look.title}</h3>
+                  <div className={styles.lookMetaInfo}>
+                    <h3 className={styles.lookTitle}>{look.title}</h3>
+                    <span className={styles.lookSeason}>{look.season}</span>
+                  </div>
                   <span className={styles.lookDate}>
                     {new Date(look.created_at).toLocaleDateString('uk-UA')}
                   </span>
                 </div>
+                
+                {look.tags && look.tags.length > 0 && (
+                  <div className={styles.tagsRow}>
+                    {look.tags.map(tag => (
+                      <span key={tag} className={styles.tag}>#{tag}</span>
+                    ))}
+                  </div>
+                )}
                 
                 <div className={styles.itemsPreview}>
                   {look.look_items.map((li) => (

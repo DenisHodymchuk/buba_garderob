@@ -92,13 +92,64 @@
 }
 
 .canvasHeader {
-  padding: 1.5rem 2rem;
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.lookMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.titleInput {
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+  width: 100%;
+  outline: none;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.titleInput:focus {
+  border-color: #a855f7;
+}
+
+.metaRow {
+  display: flex;
+  gap: 12px;
   align-items: center;
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-  z-index: 10;
+}
+
+.select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+}
+
+.tagsInput {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  flex: 1;
+  outline: none;
+}
+
+.tagsInput:focus {
+  border-color: #a855f7;
 }
 
 .title {
