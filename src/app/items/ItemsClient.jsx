@@ -6,6 +6,7 @@ import ItemCard from "@/components/ItemCard";
 import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import Toast from "@/components/Toast";
+import CustomSelect from "@/components/CustomSelect";
 import { AnimatePresence } from "framer-motion";
 import styles from "./page.module.css";
 
@@ -184,22 +185,19 @@ export default function ItemsClient({ initialItems }) {
           <div className={styles.formRow}>
             <div className={styles.formGroup}>
               <label>Категорія</label>
-              <select className={styles.input} value={itemCategory} onChange={(e) => setItemCategory(e.target.value)}>
-                <option>Верх</option>
-                <option>Низ</option>
-                <option>Верхній одяг</option>
-                <option>Взуття</option>
-                <option>Аксесуари</option>
-              </select>
+              <CustomSelect 
+                value={itemCategory} 
+                onChange={setItemCategory} 
+                options={["Верх", "Низ", "Верхній одяг", "Взуття", "Аксесуари"]} 
+              />
             </div>
             <div className={styles.formGroup}>
               <label>Сезон</label>
-              <select className={styles.input} value={itemSeason} onChange={(e) => setItemSeason(e.target.value)}>
-                <option>Літо</option>
-                <option>Демісезон</option>
-                <option>Зима</option>
-                <option>Всесезонна</option>
-              </select>
+              <CustomSelect 
+                value={itemSeason} 
+                onChange={setItemSeason} 
+                options={["Літо", "Демісезон", "Зима", "Всесезонна"]} 
+              />
             </div>
           </div>
           

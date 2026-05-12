@@ -1,13 +1,13 @@
 "use client";
 import { useState, useRef } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Save, RefreshCw, X, Image as ImageIcon } from "lucide-react";
 import Button from "@/components/Button";
 import styles from "./page.module.css";
 import Image from "next/image";
 import Toast from "@/components/Toast";
-import { AnimatePresence } from "framer-motion";
+import CustomSelect from "@/components/CustomSelect";
 
 import { saveLookAction } from "./actions";
 
@@ -21,6 +21,8 @@ export default function ConstructorPage({ initialWardrobeItems, initialCanvasIte
   const [title, setTitle] = useState(existingLook?.title || "");
   const [season, setSeason] = useState(existingLook?.season || "Універсальний");
   const [tags, setTags] = useState(existingLook?.tags?.join(", ") || "");
+
+  const seasons = ["Універсальний", "Літо", "Осінь", "Зима", "Весна"];
 
   const canvasRef = useRef(null);
 
@@ -125,13 +127,11 @@ export default function ConstructorPage({ initialWardrobeItems, initialCanvasIte
           </div>
           
           <div className={styles.metaRow}>
-            <select value={season} onChange={(e) => setSeason(e.target.value)} className={styles.select}>
-              <option>Універсальний</option>
-              <option>Літо</option>
-              <option>Осінь</option>
-              <option>Зима</option>
-              <option>Весна</option>
-            </select>
+            <CustomSelect 
+              value={season} 
+              onChange={setSeason} 
+              options={seasons} 
+            />
             <input 
               type="text" 
               placeholder="Теги (через кому)..." 
@@ -195,4 +195,3 @@ export default function ConstructorPage({ initialWardrobeItems, initialCanvasIte
     </div>
   );
 }
-

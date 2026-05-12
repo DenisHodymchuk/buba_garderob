@@ -1,0 +1,66 @@
+.container {
+  position: relative;
+  min-width: 160px;
+}
+
+.trigger {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 10px 16px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.trigger:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(168, 85, 247, 0.3);
+}
+
+.active {
+  border-color: #a855f7;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  background: rgba(15, 15, 26, 0.95);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 8px;
+  margin: 0;
+  list-style: none;
+  z-index: 1000;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.option {
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.option:hover {
+  background: rgba(168, 85, 247, 0.2);
+  color: white;
+}
+
+.selected {
+  background: rgba(168, 85, 247, 0.15);
+  color: #a855f7;
+  font-weight: 600;
+}
