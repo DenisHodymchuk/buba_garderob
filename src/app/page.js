@@ -1,8 +1,20 @@
 import Link from "next/link";
-import { Shirt, Scissors, CalendarDays, BarChart2, PackageOpen, Sparkles } from "lucide-react";
+import { redirect } from "next/navigation";
+import { Shirt, Scissors, CalendarDays, BarChart2, PackageOpen, Sparkles, LogIn, LogOut } from "lucide-react";
 import styles from "./page.module.css";
+import { createClient } from "@/lib/supabase/server";
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  const signOut = async () => {
+    "use server";
+    const supabaseServer = await createClient();
+    await supabaseServer.auth.signOut();
+    redirect("/");
+  };
+
   return (
     <main className={styles.main}>
       <header className={styles.header}>
@@ -13,6 +25,18 @@ export default function Home() {
             <Link href="/constructor" className={styles.navLink}>Конструктор</Link>
             <Link href="/calendar" className={styles.navLink}>Календар</Link>
             <Link href="/analytics" className={styles.navLink}>Аналітика</Link>
+            
+            {user ? (
+              <form action={signOut} style={{ margin: 0 }}>
+                <button type="submit" className={styles.navLink} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', padding: 0 }}>
+                  <LogOut size={16} /> Вийти
+                </button>
+              </form>
+            ) : (
+              <Link href="/login" className={styles.navLink} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <LogIn size={16} /> Увійти
+              </Link>
+            )}
           </nav>
         </div>
       </header>
