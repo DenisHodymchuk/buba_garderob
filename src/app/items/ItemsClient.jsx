@@ -5,6 +5,8 @@ import { Plus, Filter, UploadCloud } from "lucide-react";
 import ItemCard from "@/components/ItemCard";
 import Button from "@/components/Button";
 import Modal from "@/components/Modal";
+import Toast from "@/components/Toast";
+import { AnimatePresence } from "framer-motion";
 import styles from "./page.module.css";
 
 import { saveItemAction } from "./actions";
@@ -12,6 +14,7 @@ import { saveItemAction } from "./actions";
 export default function ItemsClient({ initialItems }) {
   const [items, setItems] = useState(initialItems);
   const [isSaving, setIsSaving] = useState(false);
+  const [toast, setToast] = useState(null);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filter, setFilter] = useState("Всі");
@@ -76,11 +79,11 @@ export default function ItemsClient({ initialItems }) {
 
   const handleSave = async () => {
     if (!itemName.trim()) {
-      alert("Будь ласка, введіть назву речі");
+      setToast({ message: "Будь ласка, введіть назву речі", type: "error" });
       return;
     }
     if (!selectedFile) {
-      alert("Будь ласка, завантажте фото");
+      setToast({ message: "Будь ласка, завантажте фото", type: "error" });
       return;
     }
     
@@ -96,10 +99,11 @@ export default function ItemsClient({ initialItems }) {
       const newItem = await saveItemAction(formData);
       
       setItems([newItem, ...items]);
+      setToast({ message: "Річ успішно додана! ✨", type: "success" });
       closeModal();
     } catch (error) {
       console.error("Error saving item:", error);
-      alert("Помилка збереження: " + error.message);
+      setToast({ message: "Помилка збереження: " + error.message, type: "error" });
     } finally {
       setIsSaving(false);
     }
@@ -204,6 +208,16 @@ export default function ItemsClient({ initialItems }) {
           </Button>
         </div>
       </Modal>
+
+      <AnimatePresence>
+        {toast && (
+          <Toast 
+            message={toast.message} 
+            type={toast.type} 
+            onClose={() => setToast(null)} 
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

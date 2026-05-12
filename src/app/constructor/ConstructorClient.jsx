@@ -6,6 +6,8 @@ import { Save, RefreshCw, X, Image as ImageIcon } from "lucide-react";
 import Button from "@/components/Button";
 import styles from "./page.module.css";
 import Image from "next/image";
+import Toast from "@/components/Toast";
+import { AnimatePresence } from "framer-motion";
 
 import { saveLookAction } from "./actions";
 
@@ -13,6 +15,7 @@ export default function ConstructorPage({ initialWardrobeItems, initialCanvasIte
   const [wardrobeItems] = useState(initialWardrobeItems);
   const [canvasItems, setCanvasItems] = useState(initialCanvasItems || []);
   const [isSaving, setIsSaving] = useState(false);
+  const [toast, setToast] = useState(null);
   
   // Metadata states
   const [title, setTitle] = useState(existingLook?.title || "");
@@ -49,7 +52,7 @@ export default function ConstructorPage({ initialWardrobeItems, initialCanvasIte
 
   const handleSaveLook = async () => {
     if (canvasItems.length === 0) {
-      alert("Додайте хоча б одну річ!");
+      setToast({ message: "Додайте хоча б одну річ!", type: "error" });
       return;
     }
 
@@ -65,7 +68,8 @@ export default function ConstructorPage({ initialWardrobeItems, initialCanvasIte
         tags: tagList
       });
       
-      alert(existingLook ? "Образ оновлено! 🎉" : "Образ збережено! 🎉");
+      setToast({ message: existingLook ? "Образ оновлено! 🎉" : "Образ збережено! 🎉", type: "success" });
+      
       if (!existingLook) {
         setCanvasItems([]);
         setTitle("");
@@ -73,7 +77,7 @@ export default function ConstructorPage({ initialWardrobeItems, initialCanvasIte
       }
     } catch (error) {
       console.error("Error saving look:", error);
-      alert("Помилка: " + error.message);
+      setToast({ message: "Помилка: " + error.message, type: "error" });
     } finally {
       setIsSaving(false);
     }
@@ -178,6 +182,16 @@ export default function ConstructorPage({ initialWardrobeItems, initialCanvasIte
           </div>
         </div>
       </main>
+
+      <AnimatePresence>
+        {toast && (
+          <Toast 
+            message={toast.message} 
+            type={toast.type} 
+            onClose={() => setToast(null)} 
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
