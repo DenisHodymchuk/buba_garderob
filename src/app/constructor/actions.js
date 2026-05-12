@@ -62,9 +62,7 @@ export async function saveLookAction(lookData) {
     x: item.x || 50,
     y: item.y || 50,
     z_index: item.zIndex || 1,
-    scale: item.scale || 1,
-    rotation: item.rotation || 0,
-    flip_x: item.flip_x || false
+    scale: item.scale || 1
   }));
 
   const { error: itemsError } = await supabase

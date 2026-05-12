@@ -1,326 +1,302 @@
+.main {
+  min-height: 100vh;
+  padding: 60px 0;
+  background: radial-gradient(circle at top right, #12121e, #09090f);
+  color: white;
+}
+
 .header {
-  margin-bottom: 32px;
-  padding-top: 20px;
+  margin-bottom: 50px;
 }
 
 .headerTopRow {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
-}
-
-.title {
-  font-size: 24px;
-  font-weight: 700;
-  margin: 0;
+  gap: 20px;
+  margin-bottom: 30px;
 }
 
 .backLink {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #666;
+  color: rgba(255, 255, 255, 0.5);
   text-decoration: none;
   font-size: 14px;
+  transition: all 0.3s;
 }
 
+.backLink:hover {
+  color: #a855f7;
+  transform: translateX(-4px);
+}
+
+.title {
+  font-size: 42px;
+  font-weight: 800;
+  background: linear-gradient(to right, #fff, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+}
+
+/* Filter Bar */
 .filterBar {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 24px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .searchWrapper {
   position: relative;
-  width: 100%;
+  flex: 1;
 }
 
 .searchIcon {
   position: absolute;
-  left: 12px;
+  left: 16px;
   top: 50%;
   transform: translateY(-50%);
-  color: #999;
+  color: rgba(255, 255, 255, 0.3);
 }
 
 .searchInput {
   width: 100%;
-  background: #f0f0f0;
-  border: none;
-  padding: 12px 12px 12px 40px;
-  border-radius: 12px;
-  font-size: 14px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 12px 16px 12px 48px;
+  color: white;
+  font-size: 15px;
   outline: none;
+  transition: all 0.3s;
+}
+
+.searchInput:focus {
+  border-color: #a855f7;
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .seasonsFilter {
   display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 4px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .seasonBtn {
-  background: white;
-  border: 1px solid #eee;
-  padding: 6px 16px;
-  border-radius: 20px;
-  white-space: nowrap;
-  font-size: 13px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.6);
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 14px;
   cursor: pointer;
+  transition: all 0.2s;
+}
+
+.seasonBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .activeSeason {
-  background: #000;
+  background: #a855f7;
   color: white;
-  border-color: #000;
+  border-color: #a855f7;
 }
 
-/* Grid */
+/* Grid & Cards */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 24px;
 }
 
 .lookCard {
-  background: white;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  cursor: pointer;
-  transition: transform 0.2s;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-radius: 28px;
+  padding: 1px; /* Gradient border effect */
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.lookInner {
+  background: #161625;
+  border-radius: 27px;
+  padding: 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .lookCard:hover {
-  transform: translateY(-4px);
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
-.cardPreview {
-  height: 180px;
-  background: #f9f9f9;
+.lookHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.lookMainInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lookTitle {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.lookMetaTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.seasonTag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(168, 85, 247, 0.15);
+  color: #d8b4fe;
+  border: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.customTag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lookDate {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.itemsPreview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 12px;
+  border-radius: 18px;
+}
+
+.itemThumb {
   position: relative;
+  aspect-ratio: 1;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  padding: 6px;
+}
+
+.lookFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.itemCount {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.editBtn {
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s;
+}
+
+.editBtn:hover {
+  background: #a855f7;
+  border-color: #a855f7;
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100px 0;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.resetBtn {
+  background: none;
+  border: 1px solid #a855f7;
+  color: #a855f7;
+  padding: 10px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: all 0.2s;
+}
+
+.resetBtn:hover {
+  background: #a855f7;
+  color: white;
+}
+
+.lookHeaderRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.deleteLookBtn {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  padding: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
 }
 
-.cardThumb {
-  width: 80px;
-  height: 80px;
-  position: relative;
-  margin-left: -30px;
+.lookCard:hover .deleteLookBtn {
+  opacity: 1;
 }
 
-.cardThumb:first-child {
-  margin-left: 0;
+.deleteLookBtn:hover {
+  background: #ef4444;
+  color: white;
+  transform: scale(1.1);
 }
 
-.cardInfo {
-  padding: 12px;
-}
-
-.cardTitle {
-  font-size: 15px;
-  font-weight: 600;
-  margin: 0 0 4px 0;
-}
-
-.cardSeason {
-  font-size: 12px;
-  color: #999;
-}
-
-/* Detail Overlay */
-.detailOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-  display: flex;
-  align-items: flex-end;
-}
-
-.detailSheet {
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-  background: white;
-  border-radius: 32px 32px 0 0;
-  max-height: 90vh;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-}
-
-.sheetHeader {
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.wornCount {
-  font-family: monospace;
-  color: #666;
-}
-
-.closeSheet {
-  background: #f0f0f0;
-  border: none;
-  padding: 8px;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.lookVisual {
-  height: 350px;
-  background: #fff;
-  position: relative;
-}
-
-.canvasPreview {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
-}
-
-.previewItem {
-  pointer-events: none;
-}
-
-.sheetActions {
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #eee;
-}
-
-.leftIcons {
-  display: flex;
-  gap: 20px;
-  color: #333;
-}
-
-.leftIcons a, .leftIcons button {
-  color: inherit;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
-
-.dangerIcon {
-  color: #ef4444 !important;
-}
-
-.scheduleBtn {
-  background: #ccff00;
-  color: #000;
-  padding: 12px 24px;
-  border-radius: 12px;
-  border: none;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-}
-
-.tabs {
-  display: flex;
-  padding: 10px 20px;
-  border-bottom: 1px solid #eee;
-}
-
-.tab {
-  flex: 1;
-  background: none;
-  border: none;
-  padding: 10px;
-  font-size: 16px;
-  color: #999;
-  cursor: pointer;
-  position: relative;
-}
-
-.activeTab {
-  color: #000;
-  font-weight: 600;
-}
-
-.activeTab::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: #000;
-}
-
-.tabContent {
-  padding: 24px;
-  flex: 1;
-}
-
-.aboutSection {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.stylingTagsHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.stylingTagsHeader h4 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.metaRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid #f9f9f9;
-}
-
-.metaLabel {
-  color: #333;
-  font-size: 16px;
-}
-
-.metaValue {
-  color: #666;
-}
-
-.addBtn {
-  background: #fef2f2;
-  color: #ec4899;
-  border: none;
-  padding: 6px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.fullSaveBtn {
-  background: #e0e0e0;
-  color: #999;
-  width: 100%;
-  padding: 16px;
-  border-radius: 12px;
-  border: none;
-  font-size: 18px;
-  font-weight: 600;
-  margin-top: 20px;
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
