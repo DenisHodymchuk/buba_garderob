@@ -23,8 +23,8 @@ export default async function Home() {
           <nav className={styles.navLinks}>
             <Link href="/items" className={styles.navLink}>Речі</Link>
             <Link href="/constructor" className={styles.navLink}>Конструктор</Link>
+            <Link href="/looks" className={styles.navLink}>Образи</Link>
             <Link href="/calendar" className={styles.navLink}>Календар</Link>
-            <Link href="/analytics" className={styles.navLink}>Аналітика</Link>
             
             {user ? (
               <form action={signOut} style={{ margin: 0 }}>
@@ -60,29 +60,29 @@ export default async function Home() {
       </section>
 
       <section className={`${styles.dashboard} container`}>
-        <div className={`${styles.card} glass-panel`}>
+        <Link href="/items" className={`${styles.card} glass-panel`}>
           <div className={styles.cardIcon}>
             <Shirt size={24} />
           </div>
           <h3 className={styles.cardTitle}>Мої речі</h3>
           <p className={styles.cardDesc}>Завантажуйте одяг з автоматичним видаленням фону та сортуйте за сезонами.</p>
-        </div>
+        </Link>
 
-        <div className={`${styles.card} glass-panel`}>
+        <Link href="/constructor" className={`${styles.card} glass-panel`}>
           <div className={styles.cardIcon}>
             <Scissors size={24} />
           </div>
           <h3 className={styles.cardTitle}>Конструктор образів</h3>
           <p className={styles.cardDesc}>Поєднуйте речі на зручному полотні (Drag & Drop) та зберігайте найкращі луки.</p>
-        </div>
+        </Link>
 
-        <div className={`${styles.card} glass-panel`}>
+        <Link href="/looks" className={`${styles.card} glass-panel`}>
           <div className={styles.cardIcon}>
             <CalendarDays size={24} />
           </div>
-          <h3 className={styles.cardTitle}>Календар луків</h3>
-          <p className={styles.cardDesc}>Плануйте свої образи на тиждень вперед та ніколи не думайте "що сьогодні вдягнути".</p>
-        </div>
+          <h3 className={styles.cardTitle}>Мої образи</h3>
+          <p className={styles.cardDesc}>Переглядайте свої збережені комбінації та плануйте, що вдягнути.</p>
+        </Link>
 
         <div className={`${styles.card} glass-panel`}>
           <div className={styles.cardIcon}>
