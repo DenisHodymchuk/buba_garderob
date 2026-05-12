@@ -1,0 +1,171 @@
+.container {
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+}
+
+.backLink {
+  color: var(--foreground);
+  opacity: 0.6;
+  text-decoration: none;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.backLink:hover {
+  opacity: 1;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.calendarWrapper {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(12px);
+}
+
+.calendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.calendarHeader h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.navBtn {
+  background: var(--glass-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.5rem;
+  color: var(--foreground);
+  transition: all 0.2s;
+}
+
+.navBtn:hover {
+  background: var(--border);
+  transform: translateY(-1px);
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: 600;
+  color: var(--foreground);
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1rem;
+}
+
+.day {
+  aspect-ratio: 1;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  background: var(--glass-bg);
+  transition: all 0.2s;
+  position: relative;
+}
+
+.day:hover {
+  border-color: var(--primary);
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.day.today {
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.dayNumber {
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: auto;
+}
+
+.today .dayNumber {
+  background: var(--primary);
+  color: white;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: -4px 0 auto -4px;
+}
+
+.emptyDay {
+  aspect-ratio: 1;
+}
+
+.outfitPreview {
+  display: flex;
+  gap: -10px;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.outfitItem {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  background: white;
+  border-radius: 50%;
+  border: 2px solid var(--surface);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  overflow: hidden;
+  margin-left: -10px;
+}
+
+.addOutfitBtn {
+  margin-top: auto;
+  align-self: flex-end;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  color: var(--foreground);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s, background 0.2s;
+}
+
+.day:hover .addOutfitBtn {
+  opacity: 1;
+}
+
+.addOutfitBtn:hover {
+  background: var(--primary);
+  color: white;
+  border-style: solid;
+}

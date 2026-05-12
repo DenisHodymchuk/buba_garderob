@@ -1,65 +1,81 @@
-import Image from "next/image";
+import Link from "next/link";
+import { Shirt, Scissors, CalendarDays, BarChart2, PackageOpen, Sparkles } from "lucide-react";
+import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className={styles.main}>
+      <header className={styles.header}>
+        <div className={`${styles.nav} container`}>
+          <div className={styles.logo}>Wardrobe</div>
+          <nav className={styles.navLinks}>
+            <Link href="/items" className={styles.navLink}>Речі</Link>
+            <Link href="/constructor" className={styles.navLink}>Конструктор</Link>
+            <Link href="/calendar" className={styles.navLink}>Календар</Link>
+            <Link href="/analytics" className={styles.navLink}>Аналітика</Link>
+          </nav>
+        </div>
+      </header>
+
+      <section className={styles.hero}>
+        <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <h1 className={styles.heroTitle}>Твій цифровий <span>гардероб</span> нового покоління</h1>
+          <p className={styles.heroSubtitle}>
+            Керуй своїми речами, створюй неймовірні образи, плануй капсули для подорожей та отримуй аналітику свого стилю.
           </p>
+          <div className={styles.actions}>
+            <Link href="/constructor" className={styles.primaryBtn}>
+              <Sparkles size={20} />
+              Створити образ
+            </Link>
+            <Link href="/items" className={styles.secondaryBtn}>
+              Мої речі
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <section className={`${styles.dashboard} container`}>
+        <div className={`${styles.card} glass-panel`}>
+          <div className={styles.cardIcon}>
+            <Shirt size={24} />
+          </div>
+          <h3 className={styles.cardTitle}>Мої речі</h3>
+          <p className={styles.cardDesc}>Завантажуйте одяг з автоматичним видаленням фону та сортуйте за сезонами.</p>
         </div>
-      </main>
-    </div>
+
+        <div className={`${styles.card} glass-panel`}>
+          <div className={styles.cardIcon}>
+            <Scissors size={24} />
+          </div>
+          <h3 className={styles.cardTitle}>Конструктор образів</h3>
+          <p className={styles.cardDesc}>Поєднуйте речі на зручному полотні (Drag & Drop) та зберігайте найкращі луки.</p>
+        </div>
+
+        <div className={`${styles.card} glass-panel`}>
+          <div className={styles.cardIcon}>
+            <CalendarDays size={24} />
+          </div>
+          <h3 className={styles.cardTitle}>Календар луків</h3>
+          <p className={styles.cardDesc}>Плануйте свої образи на тиждень вперед та ніколи не думайте "що сьогодні вдягнути".</p>
+        </div>
+
+        <div className={`${styles.card} glass-panel`}>
+          <div className={styles.cardIcon}>
+            <PackageOpen size={24} />
+          </div>
+          <h3 className={styles.cardTitle}>Капсули в подорож</h3>
+          <p className={styles.cardDesc}>Збирайте цифрові валізи, щоб точно знати, які речі взяти з собою у відпустку.</p>
+        </div>
+
+        <div className={`${styles.card} glass-panel`}>
+          <div className={styles.cardIcon}>
+            <BarChart2 size={24} />
+          </div>
+          <h3 className={styles.cardTitle}>Аналітика</h3>
+          <p className={styles.cardDesc}>Відслідковуйте вартість одного носіння (Cost Per Wear) та дізнайтеся, що ви носите найчастіше.</p>
+        </div>
+      </section>
+    </main>
   );
 }

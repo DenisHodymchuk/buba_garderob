@@ -1,0 +1,149 @@
+.container {
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+}
+
+.backLink {
+  color: var(--foreground);
+  opacity: 0.6;
+  text-decoration: none;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+  transition: opacity 0.2s;
+}
+
+.backLink:hover {
+  opacity: 1;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.filterIcon {
+  color: var(--foreground);
+  opacity: 0.5;
+  margin-right: 0.5rem;
+}
+
+.filterBtn {
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.filterBtn:hover {
+  background: var(--border);
+}
+
+.filterBtn.active {
+  background: var(--foreground);
+  color: var(--background);
+  border-color: var(--foreground);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.uploadForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.uploadArea {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-md);
+  padding: 3rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+  cursor: pointer;
+  background: var(--glass-bg);
+  transition: all 0.2s;
+}
+
+.uploadArea:hover {
+  border-color: var(--primary);
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.uploadIcon {
+  color: var(--primary);
+}
+
+.aiBadge {
+  background: linear-gradient(135deg, #a855f7, var(--primary));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(168, 85, 247, 0.3);
+}
+
+.formRow {
+  display: flex;
+  gap: 1rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.formGroup label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.input {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--foreground);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+
+.input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
