@@ -84,21 +84,21 @@ export default async function Home() {
           <p className={styles.cardDesc}>Переглядайте свої збережені комбінації та плануйте, що вдягнути.</p>
         </Link>
 
-        <div className={`${styles.card} glass-panel`}>
+        <Link href="/capsules" className={`${styles.card} glass-panel`}>
           <div className={styles.cardIcon}>
             <PackageOpen size={24} />
           </div>
           <h3 className={styles.cardTitle}>Капсули в подорож</h3>
           <p className={styles.cardDesc}>Збирайте цифрові валізи, щоб точно знати, які речі взяти з собою у відпустку.</p>
-        </div>
+        </Link>
 
-        <div className={`${styles.card} glass-panel`}>
+        <Link href="/analytics" className={`${styles.card} glass-panel`}>
           <div className={styles.cardIcon}>
             <BarChart2 size={24} />
           </div>
           <h3 className={styles.cardTitle}>Аналітика</h3>
           <p className={styles.cardDesc}>Відслідковуйте вартість одного носіння (Cost Per Wear) та дізнайтеся, що ви носите найчастіше.</p>
-        </div>
+        </Link>
       </section>
     </main>
   );
